@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>jpg変換ツール</title>
+  <style>
+    :root {
+      --canvas-background-color: white;
+    }
+    * {
+      word-break: break-word;
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+    }
+    #id {
+      width: 100%;
+    }
+    #root > * {
+      width: 500px;
+      margin: auto;
+    }
+    #drop-area {
+      height: 100px;
+      position: relative;
+      border: solid 1px black;
+      #now-dragging {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: red;
+        display: none;
+        pointer-events: none;
+      }
+    }
+    .background-color-picker {
+      width: 300px;
+      padding: 10px;
+      background-color: white;
+    }
+    #append2 {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      gap: 10px;
+      > div {
+        border: solid 1px black;
+        width: 100%;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        > img {
+          max-width: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+    .quality-slider{
+      display:flex;
+      >input{
+        flex:0 0 350px;
+      }
+    }
+  </style>
+  <script src="index.js" defer></script>
+</head>
+<body>
+  <div id="root">
+    <div>
+      ペーストorドロップしたファイルを画質を調整しつつjpgにする<br>
+      変換後の画像は右クリック→Copyをすると常にPNGになります。<br>
+    </div>
+    <div id="drop-area">
+      Drag
+      <div id="now-dragging">Drop</div>
+    </div>
+    <div class="background-color-picker">BG Color <input type="color" id="background-color-picker" value="#ffffff" /></div>
+    <div class="quality-slider">
+      Quality:
+      <input type="range" min="-10" max="10" step="1" id="quality-slider-input"/>
+      <span id="quality-slider-value"></span>
+    </div>
+    <div id="append2">
+      <div id="before-image">
+        <div>Before</div>
+      </div>
+      <div id="after-image">
+        <div>After</div>
+      </div>
+    </div>
+  </div>
+</body>
