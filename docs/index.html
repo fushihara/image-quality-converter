@@ -47,17 +47,18 @@
         padding: 5px;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
         > img {
           max-width: 100%;
           object-fit: contain;
         }
       }
     }
-    .quality-slider{
-      display:flex;
-      >input{
-        flex:0 0 350px;
+    .quality-slider,
+    .size-slider {
+      display: flex;
+      > input {
+        flex: 0 0 350px;
       }
     }
   </style>
@@ -66,8 +67,8 @@
 <body>
   <div id="root">
     <div>
-      ペーストorドロップしたファイルを画質を調整しつつjpgにする<br>
-      変換後の画像は右クリック→Copyをすると常にPNGになります。<br>
+      ペーストorドロップしたファイルを画質を調整しつつjpgにする<br />
+      変換後の画像は右クリック→Copyをすると常にPNGになります。<br />
     </div>
     <div id="drop-area">
       Drag
@@ -76,8 +77,13 @@
     <div class="background-color-picker">BG Color <input type="color" id="background-color-picker" value="#ffffff" /></div>
     <div class="quality-slider">
       Quality:
-      <input type="range" min="-10" max="10" step="1" id="quality-slider-input"/>
+      <input type="range" min="-10" max="10" step="1" id="quality-slider-input" />
       <span id="quality-slider-value"></span>
+    </div>
+    <div class="size-slider">
+      Size:
+      <input type="range" min="-10" max="10" step="1" id="size-slider-input" />
+      <span id="size-slider-value"></span>
     </div>
     <div id="append2">
       <div id="before-image">
