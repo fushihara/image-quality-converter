@@ -10,12 +10,12 @@ class PasteFile {
   _backgroundColor = initialBackgroundColor;
   _quality = qualityList[0];
   _sizeScale = sizeList[0];
-  async onDrop(fileObj) {
+  async onDrop (fileObj) {
     if (fileObj == null) {
       alert("fileObjがnullです");
       return;
     }
-    const {type: fileType} = fileObj;
+    const { type: fileType } = fileObj;
     const allowFileTypes = ["image/jpeg", "image/png", "image/svg+xml"];
     if (allowFileTypes.includes(fileType) == false) {
       alert(`ファイルのmimeTypeが想定外です。type:"${fileType}`);
@@ -25,22 +25,22 @@ class PasteFile {
     const fileObjBlobUrl = URL.createObjectURL(fileObj);
     const imageSize = await this._getImageElement(fileObjBlobUrl);
     URL.revokeObjectURL(fileObjBlobUrl);
-    await this._setBlob(document.querySelector("#before-image"), fileObj, null, {width: imageSize.imageSize.width, height: imageSize.imageSize.height});
+    await this._setBlob(document.querySelector("#before-image"), fileObj, null, { width: imageSize.imageSize.width, height: imageSize.imageSize.height });
     await this._updateAfterElement();
   }
-  async updateBackgroundColor(backgroundColor) {
+  async updateBackgroundColor (backgroundColor) {
     this._backgroundColor = backgroundColor;
     await this._updateAfterElement();
   }
-  async updateQuality(quality) {
+  async updateQuality (quality) {
     this._quality = quality;
     await this._updateAfterElement();
   }
-  async updateSizeScale(sizeScale) {
+  async updateSizeScale (sizeScale) {
     this._sizeScale = sizeScale;
     await this._updateAfterElement();
   }
-  async _updateAfterElement() {
+  async _updateAfterElement () {
     if (this.fileObj == null) {
       return;
     }
@@ -48,21 +48,17 @@ class PasteFile {
     if (afterImageElement == null || afterImageElement.canvasBlob == null) {
       return;
     }
-    await this._setBlob(document.querySelector("#after-image"), afterImageElement.canvasBlob, this._quality, {width: afterImageElement.scaledSize.width, height: afterImageElement.scaledSize.height});
+    await this._setBlob(document.querySelector("#after-image"), afterImageElement.canvasBlob, this._quality, { width: afterImageElement.scaledSize.width, height: afterImageElement.scaledSize.height });
   }
-  async _setBlob(baseElement, blobObject, quality, size) {
-    let image = baseElement.querySelector("img");
-    if (image == null) {
-      image = new Image();
-      baseElement.appendChild(image);
-    }
+  async _setBlob (baseElement, blobObject, quality, size) {
+    const image = baseElement.querySelector("img");
     const blobUrl = URL.createObjectURL(blobObject);
     await new Promise((resolve) => {
-      image.addEventListener("load", resolve, {once: true});
+      image.addEventListener("load", resolve, { once: true });
       image.src = blobUrl;
     });
     URL.revokeObjectURL(blobUrl);
-    const textArea = baseElement.querySelector("div");
+    const textArea = baseElement.querySelector(".msg");
     const sizeStr = `${size.width} x ${size.height}`;
     if (quality != null) {
       textArea.innerText = `"${blobObject.type}" , ${sizeStr} ${(blobObject.size / 1000).toFixed(1)}kb , Quality ${Number(quality)}`;
@@ -70,7 +66,7 @@ class PasteFile {
       textArea.innerText = `"${blobObject.type}" , ${sizeStr} ${(blobObject.size / 1000).toFixed(1)}kb`;
     }
   }
-  async _getConvertedBlob(imageFileObj, quality, sizeScale) {
+  async _getConvertedBlob (imageFileObj, quality, sizeScale) {
     const backgroundColor = this._backgroundColor;
     const fileObjBlobUrl = URL.createObjectURL(imageFileObj);
     const imageElement = await this._getImageElement(fileObjBlobUrl);
@@ -97,9 +93,9 @@ class PasteFile {
     if (this._backgroundColor != backgroundColor) {
       return null;
     }
-    return {canvasBlob, originalSize: {width: imageElement.imageSize.width, height: imageElement.imageSize.height}, scaledSize: {width: canvas.width, height: canvas.height}};
+    return { canvasBlob, originalSize: { width: imageElement.imageSize.width, height: imageElement.imageSize.height }, scaledSize: { width: canvas.width, height: canvas.height } };
   }
-  async _getImageElement(fileObjBlobUrl) {
+  async _getImageElement (fileObjBlobUrl) {
     const img = new Image();
     const imageSize = await new Promise(async (resolve) => {
       img.onload = () => {
@@ -111,11 +107,12 @@ class PasteFile {
       };
       img.src = fileObjBlobUrl;
     });
-    return {imageSize, imgElement: img};
+    return { imageSize, imgElement: img };
   }
 }
 const pasteFile = new PasteFile();
 const colorPicker = document.querySelector("#background-color-picker");
+const fitImageCheckbox = document.querySelector("#fit-image-checkbox");
 const qualitySliderInput = document.querySelector("#quality-slider-input");
 const qualitySliderValue = document.querySelector("#quality-slider-value");
 const sizeSliderInput = document.querySelector("#size-slider-input");
@@ -205,4 +202,13 @@ colorPicker.value = initialBackgroundColor;
     sizeSliderValue.innerText = String(val);
     pasteFile.updateSizeScale(val);
   });
+}
+{
+  // 画像を枠にfitさせるかどうかのチェックボックス
+  if (!(fitImageCheckbox instanceof HTMLInputElement)) {
+    throw new Error("fitImageCheckbox is not checkbox");
+  }
+  fitImageCheckbox.addEventListener("change", () => {
+    alert(fitImageCheckbox.checked)
+  })
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width" />
@@ -8,18 +9,29 @@
       word-break: break-word;
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
       min-height: 100vh;
     }
-    #root > * {
+
+    #root {
+      height: 100vh;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #root>* {
       width: 500px;
       margin: auto;
     }
+
     #drop-area {
-      height: 100px;
+      height: 30px;
       position: relative;
       border: solid 1px black;
+
       #now-dragging {
         position: absolute;
         width: 100%;
@@ -31,39 +43,62 @@
         pointer-events: none;
       }
     }
+
     .background-color-picker {
       width: 300px;
       padding: 10px;
       background-color: white;
     }
+
     #append2 {
       width: 100%;
       display: flex;
       justify-content: space-around;
       gap: 10px;
-      > div {
+      flex: 1 1 0;
+
+      >div {
         border: solid 1px black;
         width: 100%;
         padding: 5px;
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        > img {
-          max-width: 100%;
-          object-fit: contain;
+        background-color: #dfdfdf;
+
+        .image-parent {
+          flex: 1 1 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          flex-direction: column;
+
+        }
+
+        .image-parent.fit {
+          justify-content: center;
+          align-items: stretch;
+        }
+
+        img {
+         // object-fit: scale-down;
         }
       }
     }
+
     .quality-slider,
     .size-slider {
       display: flex;
-      > input {
+
+      >input {
         flex: 0 0 350px;
       }
     }
   </style>
   <script src="index.js" defer></script>
 </head>
+
 <body>
   <div id="root">
     <div>
@@ -74,7 +109,10 @@
       Drag
       <div id="now-dragging">Drop</div>
     </div>
-    <div class="background-color-picker">BG Color <input type="color" id="background-color-picker" value="#ffffff" /></div>
+    <div class="background-color-picker">
+      BG Color <input type="color" id="background-color-picker" value="#ffffff" />/
+      <label>画像フィット <input type="checkbox" id="fit-image-checkbox"></label>
+    </div>
     <div class="quality-slider">
       Quality:
       <input type="range" min="-10" max="10" step="1" id="quality-slider-input" />
@@ -87,10 +125,16 @@
     </div>
     <div id="append2">
       <div id="before-image">
-        <div>Before</div>
+        <div class="msg">Before</div>
+        <div class="image-parent">
+          <img src="https://dummyimage.com/100x1000/000/fff&text=1000">
+        </div>
       </div>
       <div id="after-image">
-        <div>After</div>
+        <div class="msg">After</div>
+        <div class="image-parent">
+          <img src="https://dummyimage.com/100x100/000/fff&text=100">
+        </div>
       </div>
     </div>
   </div>
